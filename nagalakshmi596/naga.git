@@ -1,0 +1,93 @@
+from IPython.core.compilerop import CachingCompiler
+#step1: import library
+import pandas as pd
+#step 2 : import data
+cancer = pd.read_csv('https://github.com/YBIFoundation/Dataset/raw/main/Cancer.csv')
+#step 3 :
+cancer.head()
+#step 4 :
+cancer.info()
+#step 5 :
+cancer.describe()
+#step 6 : define target (y) and features (x)
+#step 7 :
+cancer.columns
+#step 8 :
+y = cancer['diagnosis']
+#step 9 :
+x = cancer.drop(['id','diagnosis','Unnamed: 32'],axis=1)
+#step 10 : train test split
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test=train_test_split(x,y,train_size=0.7,random_state=2529)
+#step 11 : check shape of train and test sample
+x_train.shape,x_test.shape,y_train.shape,y_test.shape
+#step 12 : select model
+from sklearn.linear_model import LogisticRegression
+model = LogisticRegression(max_iter=5000)
+#step 13 : train or fit model
+model.fit(x_train,y_train)
+#step 14 :
+model.intercept_
+#step 15 :
+model.coef_
+#step 16 :predict model
+y_pred = model.predict(x_test)
+#step 17 :
+y_pred
+#step 18 : model accuracy
+from sklearn.metrics import confusion_matrix,accuracy_score,classification_report
+#step 19 :
+confusion_matrix(y_test,y_pred)
+#step 20 :
+accuracy_score(y_test,y_pred)
+#step 21 :
+print(classification_report(y_test,y_pred))
+     
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 569 entries, 0 to 568
+Data columns (total 33 columns):
+ #   Column                   Non-Null Count  Dtype  
+---  ------                   --------------  -----  
+ 0   id                       569 non-null    int64  
+ 1   diagnosis                569 non-null    object 
+ 2   radius_mean              569 non-null    float64
+ 3   texture_mean             569 non-null    float64
+ 4   perimeter_mean           569 non-null    float64
+ 5   area_mean                569 non-null    float64
+ 6   smoothness_mean          569 non-null    float64
+ 7   compactness_mean         569 non-null    float64
+ 8   concavity_mean           569 non-null    float64
+ 9   concave points_mean      569 non-null    float64
+ 10  symmetry_mean            569 non-null    float64
+ 11  fractal_dimension_mean   569 non-null    float64
+ 12  radius_se                569 non-null    float64
+ 13  texture_se               569 non-null    float64
+ 14  perimeter_se             569 non-null    float64
+ 15  area_se                  569 non-null    float64
+ 16  smoothness_se            569 non-null    float64
+ 17  compactness_se           569 non-null    float64
+ 18  concavity_se             569 non-null    float64
+ 19  concave points_se        569 non-null    float64
+ 20  symmetry_se              569 non-null    float64
+ 21  fractal_dimension_se     569 non-null    float64
+ 22  radius_worst             569 non-null    float64
+ 23  texture_worst            569 non-null    float64
+ 24  perimeter_worst          569 non-null    float64
+ 25  area_worst               569 non-null    float64
+ 26  smoothness_worst         569 non-null    float64
+ 27  compactness_worst        569 non-null    float64
+ 28  concavity_worst          569 non-null    float64
+ 29  concave points_worst     569 non-null    float64
+ 30  symmetry_worst           569 non-null    float64
+ 31  fractal_dimension_worst  569 non-null    float64
+ 32  Unnamed: 32              0 non-null      float64
+dtypes: float64(31), int64(1), object(1)
+memory usage: 146.8+ KB
+              precision    recall  f1-score   support
+
+           B       0.98      0.95      0.97       102
+           M       0.93      0.97      0.95        69
+
+    accuracy                           0.96       171
+   macro avg       0.96      0.96      0.96       171
+weighted avg       0.96      0.96      0.96       171
